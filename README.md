@@ -30,3 +30,9 @@ Than in your config/queue.php file you can add:
 Then in your code you can add code as (this is the native way to add jobs to the queue):
 
     Queue::push('SomeClass', array('message' => 'dannite koito trqbva da se izpratqt'));
+
+
+#What's next:
+
+Very soon I will add the native command for artisan to listen. Currently the worker you need to implement on your own
+This package is still not final version. It is in dev progress.
