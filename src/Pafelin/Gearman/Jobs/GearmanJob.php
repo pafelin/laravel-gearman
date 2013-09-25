@@ -2,6 +2,8 @@
 
 namespace Pafelin\Gearman\Jobs;
 use Illuminate\Container\Container;
+use Illuminate\Queue\Jobs\Job;
+use \GearmanWorker;
 
 class GearmanJob extends Job {
 
@@ -9,17 +11,14 @@ class GearmanJob extends Job {
 
     protected $job;
 
-    public function __construct(Container $container,
-                                Gearman $gearman,
-                                GearmanJob $job )
+    public function __construct(Container $container, GearmanWorker $worker)
     {
-        $this->job = $job;
         $this->container = $container;
-        $this->gearman = $gearman;
+        $this->worker = $worker;
     }
 
     public function fire(){
-        $this->resolveAndFire(json_decode($this->job->getData(), true));
+        die('in fire@GearmanJob');
     }
 
     public function delete(){
@@ -30,7 +29,7 @@ class GearmanJob extends Job {
 
     }
 
-    public function atempts() {
+    public function attempts() {
 
     }
 
