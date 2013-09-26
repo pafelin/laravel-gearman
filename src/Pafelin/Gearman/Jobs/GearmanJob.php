@@ -4,6 +4,7 @@ namespace Pafelin\Gearman\Jobs;
 use Illuminate\Container\Container;
 use Illuminate\Queue\Jobs\Job;
 use \GearmanWorker;
+use Illuminate\Support\Facades\Mail;
 
 class GearmanJob extends Job {
 
@@ -19,7 +20,7 @@ class GearmanJob extends Job {
     {
         $this->container = $container;
         $this->worker = $worker;
-        $this->worker->addFunction($queue, array($this,'fire'));
+        $this->worker->addFunction($queue, array($this, 'onGearmanJob'));
     }
 
     public function fire(){
@@ -77,7 +78,10 @@ class GearmanJob extends Job {
     }
 
     public function onGearmanJob(\GearmanJob $job) {
-        $this->job = $job;
+        var_dump('izpalnenie na onGearmanJob');
+        $workload = $job->workload();
+        var_dump($workload);
+        mail('pafelin@gmail.com', 'gearmantest', $workload);
     }
 
 }
