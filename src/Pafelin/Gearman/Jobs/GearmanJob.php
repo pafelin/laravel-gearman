@@ -8,9 +8,11 @@ use Illuminate\Support\Facades\Mail;
 
 class GearmanJob extends Job {
 
-    protected $gearman;
+    protected $worker;
 
     protected $job;
+
+    protected $rawPayload = '';
 
     private $maxRunTime = 1;
 
@@ -69,8 +71,8 @@ class GearmanJob extends Job {
         return $this->container;
     }
 
-    public function getGearman() {
-        return $this->gearman;
+    public function getGearmanWorker() {
+        return $this->worker;
     }
 
     public function getGearmanJob() {
@@ -78,10 +80,7 @@ class GearmanJob extends Job {
     }
 
     public function onGearmanJob(\GearmanJob $job) {
-        var_dump('izpalnenie na onGearmanJob');
-        $workload = $job->workload();
-        var_dump($workload);
-        mail('pafelin@gmail.com', 'gearmantest', $workload);
+        $this->resolveAndFire(json_decode($job->workload(), true));
     }
 
 }
