@@ -60,10 +60,6 @@ class GearmanQueue extends Queue implements QueueInterface
             $queue = $this->queue;
         }
 
-        $geramanJob = new GearmanJob($this->container, $this->worker);
-
-        $this->worker->addFunction($queue, array($geramanJob,'onGearmanJob'));
-
-        return $geramanJob;
+        return new GearmanJob($this->container, $this->worker, $queue);
     }
 }
