@@ -29,10 +29,42 @@ Than in your config/queue.php file you can add:
 
 Then in your code you can add code as (this is the native way to add jobs to the queue):
 
-    Queue::push('SomeClass', array('message' => 'dannite koito trqbva da se izpratqt'));
+    Queue::push('SomeClass', array('message' => 'The data that should be available in the SomeClass@fire method'));
+
+Small hint, you can call Namespaced classes and everything that is written in the docs of laravel for calling custom methods is valid here, too.
 
 
-#What's next:
+# Example:
 
-Very soon I will add the native command for artisan to listen. Currently the worker you need to implement on your own
-This package is still not final version. It is in dev progress.
+I add a "service" folder to my app folder and inside I create a file "SendMail.php"
+The code of the class is here:
+
+    <?php
+
+    namespace TaskProcess\Services;
+
+    class SendMail {
+
+        public function fire($job, $data)
+        {
+            //I send an email to my email address with subject "gearman test" and message whatever comes from gearman
+            mail('pavel@taskprocess.com', 'gearman test', $data['message']);
+        }
+
+    }
+
+In my routes file I add a new Route
+
+
+    Route::get('/gearman', function() {
+        //in a loop I add 3 jobs to gearman with different content. The purpose is to see 3 different emails with 3 different contents
+        foreach (array(1,2,3) as $row) {
+            Queue::push('TaskProcess\Services\SendMail', array('message' => 'Message №' . $row));
+        }
+    });
+
+Finally I just run on my console:
+
+    php artisan queue:listen
+
+And I go to check what's on my email
