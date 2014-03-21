@@ -68,4 +68,13 @@ class GearmanJob extends Job {
         $this->resolveAndFire(json_decode($this->rawPayload, true));
     }
 
+	/**
+	 * Get the raw body string for the job.
+	 *
+	 * @return string
+	 */
+	public function getRawBody() {
+
+		return $this->rawPayload;
+	}
 }
