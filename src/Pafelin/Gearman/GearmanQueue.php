@@ -63,19 +63,19 @@ class GearmanQueue extends Queue implements QueueInterface
         return new GearmanJob($this->container, $this->worker, $queue);
     }
 
-	/**
-	 * Push a raw payload onto the queue.
-	 *
-	 * @param  string $payload
-	 * @param  string $queue
-	 * @param  array $options
-	 * @throws \Exception
-	 * @return mixed
-	 */
-	public function pushRaw($payload, $queue = null, array $options = array())
-	{
+    /**
+     * Push a raw payload onto the queue.
+     *
+     * @param  string $payload
+     * @param  string $queue
+     * @param  array $options
+     * @throws \Exception
+     * @return mixed
+     */
+    public function pushRaw($payload, $queue = null, array $options = array())
+    {
 
-		throw new Exception('Gearman driver do not support the method pushRaw');
-	}
+        throw new Exception('Gearman driver do not support the method pushRaw');
+    }
 
 }
