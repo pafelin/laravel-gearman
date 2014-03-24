@@ -28,7 +28,7 @@ class GearmanQueue extends Queue implements QueueInterface
      *
      * @param string $job
      * @param string $data
-     * @param strin|null $queue
+     * @param string|null $queue
      * @return int|mixed Return gearman code
      */
     public function push($job, $data = '', $queue = null)
@@ -52,7 +52,7 @@ class GearmanQueue extends Queue implements QueueInterface
      * take a job from the queue
      *
      * @param null $queue
-     * @return \Illuminate\Queue\Jobs\Job|\Illuminate\Queue\nul|GearmanJob
+     * @return \Illuminate\Queue\Jobs\Job|\Illuminate\Queue\null|GearmanJob
      */
     public function pop($queue = null)
     {
@@ -62,4 +62,20 @@ class GearmanQueue extends Queue implements QueueInterface
 
         return new GearmanJob($this->container, $this->worker, $queue);
     }
+
+    /**
+     * Push a raw payload onto the queue.
+     *
+     * @param  string $payload
+     * @param  string $queue
+     * @param  array $options
+     * @throws \Exception
+     * @return mixed
+     */
+    public function pushRaw($payload, $queue = null, array $options = array())
+    {
+
+        throw new Exception('Gearman driver do not support the method pushRaw');
+    }
+
 }
