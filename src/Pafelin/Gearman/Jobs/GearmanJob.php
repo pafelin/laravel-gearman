@@ -5,7 +5,7 @@ use Illuminate\Container\Container;
 use Illuminate\Queue\Jobs\Job;
 use \GearmanWorker;
 use Illuminate\Support\Facades\Mail;
-use Whoops\Example\Exception;
+use \Exception;
 
 class GearmanJob extends Job {
 
