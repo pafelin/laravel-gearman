@@ -4,7 +4,6 @@ namespace Pafelin\Gearman\Jobs;
 use Illuminate\Container\Container;
 use Illuminate\Queue\Jobs\Job;
 use \GearmanWorker;
-use Illuminate\Support\Facades\Mail;
 use \Exception;
 
 class GearmanJob extends Job {
