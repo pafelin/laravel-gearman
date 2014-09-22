@@ -39,15 +39,17 @@ class GearmanJob extends Job {
     }
 
     public function delete(){
-        throw new Exception('No delete method is supported');
+	    parent::delete();
     }
 
     public function release($delay = 0) {
-        throw new Exception('No delay is suported');
+	    if ($delay > 0) {
+		    throw new Exception('No delay is suported');
+	    }
     }
 
     public function attempts() {
-        throw new Exception('No attempts is suported');
+        return 1;
     }
 
     public function getJobId() {
@@ -73,7 +75,6 @@ class GearmanJob extends Job {
      * @return string
      */
     public function getRawBody() {
-
         return $this->rawPayload;
     }
 }
