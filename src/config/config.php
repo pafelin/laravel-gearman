@@ -33,7 +33,8 @@ return array(
             'driver' => 'gearman',
             'host'   => 'localhost',
             'queue'  => 'default',
-            'port'   => '4730'
+            'port'   => '4730',
+            'timeout' => 1000, //milliseconds
         ),
 
     ),
