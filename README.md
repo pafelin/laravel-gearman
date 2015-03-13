@@ -23,7 +23,8 @@ Than in your config/queue.php file you can add:
                 'driver' => 'gearman',
                 'host'   => 'localserver.6min.local',
                 'queue'  => 'default',
-                'port'   => '4730'
+                'port'   => '4730',
+                'timeout' => 1000 //milliseconds
             )
     )
 
