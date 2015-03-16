@@ -1,10 +1,9 @@
-<?php
+<?php namespace Pafelin\Gearman\Jobs;
 
-namespace Pafelin\Gearman\Jobs;
 use Illuminate\Container\Container;
 use Illuminate\Queue\Jobs\Job;
-use \GearmanWorker;
-use \Exception;
+use GearmanWorker;
+use Exception;
 
 class GearmanJob extends Job {
 

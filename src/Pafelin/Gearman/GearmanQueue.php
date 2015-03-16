@@ -1,21 +1,42 @@
-<?php
+<?php namespace Pafelin\Gearman;
 
-namespace Pafelin\Gearman;
-
-use \GearmanClient;
-use \GearmanWorker;
 use Illuminate\Queue\Queue;
 use Illuminate\Queue\QueueInterface;
-use \Exception;
 use Pafelin\Gearman\Jobs\GearmanJob;
+use GearmanException;
+use GearmanWorker;
+use GearmanClient;
+use Exception;
 
 class GearmanQueue extends Queue implements QueueInterface
 {
 
+	/**
+	 * The gearmand worker object
+	 *
+	 * @var GearmanWorker
+	 */
     protected $worker;
+
+	/**
+	 * The gearmand client object
+	 *
+	 * @var GearmanClient
+	 */
     protected $client;
+
+	/**
+	 * The name of the queue to which the jobs will be written or pulled for processing
+	 *
+	 * @var string
+	 */
     protected $queue;
 
+	/**
+	 * @param GearmanClient $client
+	 * @param GearmanWorker $worker
+	 * @param $queue
+	 */
     public function __construct(GearmanClient $client, GearmanWorker $worker, $queue)
     {
         $this->client = $client;
@@ -38,20 +59,38 @@ class GearmanQueue extends Queue implements QueueInterface
         }
         $payload = $this->createPayload($job, $data);
 
-        $this->_doBackgroundAndHandleException($queue, $payload);
+        $this->doBackgroundAndHandleException($queue, $payload);
 
         return $this->client->returnCode();
     }
 
-    private function _doBackgroundAndHandleException($queue, $payload)
+	/**
+	 * Do the actual handling from the gearmand worker. On error it throws an exception
+	 *
+	 * @param $queue
+	 * @param $payload
+	 *
+	 * @throws GearmanException
+	 */
+    private function doBackgroundAndHandleException($queue, $payload)
     {
         try {
             $this->client->doBackground($queue, $payload);
         } catch (Exception $e) {
-            throw new \GearmanException($e);
+            throw new GearmanException($e);
         }
     }
 
+	/**
+	 * It is not supported from the gearmand driver
+	 *
+	 * @param $delay
+	 * @param $job
+	 * @param string $data
+	 * @param null $queue
+	 *
+	 * @throws Exception
+	 */
     public function later($delay, $job, $data = '', $queue = null)
     {
         throw new Exception('Gearman driver do not support the method later');
@@ -73,7 +112,7 @@ class GearmanQueue extends Queue implements QueueInterface
     }
 
     /**
-     * Push a raw payload onto the queue.
+     * It is not supported from the gearmand driver
      *
      * @param  string $payload
      * @param  string $queue
@@ -83,7 +122,6 @@ class GearmanQueue extends Queue implements QueueInterface
      */
     public function pushRaw($payload, $queue = null, array $options = array())
     {
-
         throw new Exception('Gearman driver do not support the method pushRaw');
     }
 
