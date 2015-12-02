@@ -1,7 +1,7 @@
 <?php namespace Pafelin\Gearman;
 
 use Illuminate\Queue\Queue;
-use Illuminate\Queue\QueueInterface;
+use Illuminate\Contracts\Queue\Queue as QueueInterface;
 use Pafelin\Gearman\Jobs\GearmanJob;
 use GearmanException;
 use GearmanWorker;

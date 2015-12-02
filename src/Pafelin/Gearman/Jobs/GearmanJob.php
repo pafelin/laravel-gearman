@@ -1,11 +1,12 @@
 <?php namespace Pafelin\Gearman\Jobs;
 
 use Illuminate\Container\Container;
+use Illuminate\Contracts\Queue\Job as QueueJobInterface;
 use Illuminate\Queue\Jobs\Job;
 use GearmanWorker;
 use Exception;
 
-class GearmanJob extends Job {
+class GearmanJob extends Job implements QueueJobInterface {
 
     protected $worker;
 
