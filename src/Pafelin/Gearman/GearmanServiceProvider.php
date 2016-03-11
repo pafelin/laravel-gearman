@@ -16,7 +16,9 @@ class GearmanServiceProvider extends ServiceProvider {
 
         foreach (array('Sync', 'Beanstalkd', 'Sqs', 'Iron', 'Gearman') as $connector)
         {
-            $this->{"register{$connector}Connector"}($manager);
+            if (method_exists($this, "register{$connector}Connector")) {
+                $this->{"register{$connector}Connector"}($manager);
+            }
         }
     }
 
