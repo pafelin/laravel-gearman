@@ -125,4 +125,14 @@ class GearmanQueue extends Queue implements QueueInterface
         throw new Exception('Gearman driver do not support the method pushRaw');
     }
 
+    /**
+     * Get the size of the queue.
+     *
+     * @param  string  $queue
+     * @return int
+     */
+    public function size($queue = null)
+    {
+        return 0;
+    }
 }
