@@ -3,8 +3,8 @@
 use Illuminate\Queue\QueueServiceProvider as ServiceProvider;
 use Pafelin\Gearman\Connectors\GearmanConnector;
 
-class GearmanServiceProvider extends ServiceProvider {
-
+class GearmanServiceProvider extends ServiceProvider 
+{
     /**
      * Register the connectors on the queue manager.
      *
@@ -13,13 +13,9 @@ class GearmanServiceProvider extends ServiceProvider {
      */
     public function registerConnectors($manager)
     {
-
-        foreach (array('Sync', 'Beanstalkd', 'Sqs', 'Iron', 'Gearman') as $connector)
-        {
-            if (method_exists($this, "register{$connector}Connector")) {
-                $this->{"register{$connector}Connector"}($manager);
-            }
-        }
+        parent::registerConnectors($manager);
+        
+        $this->registerGearmanConnector($manager);
     }
 
     /**
@@ -28,11 +24,10 @@ class GearmanServiceProvider extends ServiceProvider {
      * @param  \Illuminate\Queue\QueueManager  $manager
      * @return void
      */
-    public function registerGearmanConnector($manager) {
-        $manager->addConnector('gearman', function()
-        {
+    public function registerGearmanConnector($manager)
+    {
+        $manager->addConnector('gearman', function() {
             return new GearmanConnector();
         });
     }
-
 }

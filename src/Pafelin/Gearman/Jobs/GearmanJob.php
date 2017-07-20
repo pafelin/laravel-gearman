@@ -66,7 +66,18 @@ class GearmanJob extends Job implements QueueJobInterface {
 
     public function onGearmanJob(\GearmanJob $job) {
         $this->rawPayload = $job->workload();
-        $this->resolveAndFire(json_decode($this->rawPayload, true));
+        
+        $payload = json_decode($this->rawPayload, true);
+
+        if (method_exists($this, 'resolveAndFire')) {
+            $this->resolveAndFire($payload);
+            return;
+        }
+
+        list($class, $method) = $this->parseJob($payload['job']);
+
+        $this->instance = $this->resolve($class);
+        $this->instance->{$method}($this, $payload['data']);
     }
 
     /**
