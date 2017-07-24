@@ -12,12 +12,23 @@ class GearmanConnector implements ConnectorInterface {
 	 *
 	 * @return GearmanQueue
 	 */
-    public function connect(array $config) {
+    public function connect(array $config)
+    {
         $client = new GearmanClient;
-        $client->addServer($config['host'], (int) $config['port']);
-        $this->setTimeout($client, $config);
         $worker = new GearmanWorker;
-        $worker->addServer($config['host'], (int) $config['port']);
+
+        if (isset($config['hosts'])) {
+            foreach ($config['hosts'] as $server) {
+                $client->addServer($server['host'], $server['port']);
+                $worker->addServer($server['host'], $server['port']);
+            }
+        } else {
+            $client->addServer($config['host'], $config['port']);
+            $worker->addServer($config['host'], $config['port']);
+        }
+
+        $this->setTimeout($client, $config);
+
         return new GearmanQueue ($client, $worker, $config['queue']);
     }
 
@@ -25,7 +36,8 @@ class GearmanConnector implements ConnectorInterface {
 	 * @param GearmanClient $client
 	 * @param array $config
 	 */
-    private function setTimeout(GearmanClient $client, array $config) {
+    private function setTimeout(GearmanClient $client, array $config)
+    {
         if(isset ($config['timeout']) && is_numeric($config['timeout'])) {
             $client->setTimeout($config['timeout']);
         }
