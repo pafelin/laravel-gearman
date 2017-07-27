@@ -6,7 +6,7 @@ This package gives you the possibily to add gearman as native queue back-end ser
 
 first you need to add it to your composer.json
 
-second you need to comment out the native queue service provider
+second, in `config/app.php`, you need to comment out the native queue service provider
 
     //'Illuminate\Queue\QueueServiceProvider',
 
@@ -14,18 +14,32 @@ and to put this instead:
 
     'Pafelin\Gearman\GearmanServiceProvider',
 
-Than in your config/queue.php file you can add:
+Then in your config/queue.php file you can add:
 
     'default' => 'gearman',
     'connections' => array(
+        'gearman' => array(
+            'driver' => 'gearman',
+            'host'   => 'localserver.6min.local',
+            'queue'  => 'default',
+            'port'   => 4730,
+            'timeout' => 1000 //milliseconds
+        )
+    )
 
-    		'gearman' => array(
-                'driver' => 'gearman',
-                'host'   => 'localserver.6min.local',
-                'queue'  => 'default',
-                'port'   => '4730',
-                'timeout' => 1000 //milliseconds
-            )
+or, if you have multiple gearman servers:
+
+    'default' => 'gearman',
+    'connections' => array(
+        'gearman' => array(
+            'driver' => 'gearman',
+            'hosts'  => array(
+                array('host' => 'localserver.6min.local', 'port' => 4730),
+                array('host' => 'localserver2.6min.local', 'port' => 4730),
+            ),
+            'queue'  => 'default',
+            'timeout' => 1000 //milliseconds
+        )
     )
 
 Then in your code you can add code as (this is the native way to add jobs to the queue):
