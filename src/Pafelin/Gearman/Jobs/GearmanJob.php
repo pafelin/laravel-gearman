@@ -3,6 +3,7 @@
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Queue\Job as QueueJobInterface;
 use Illuminate\Queue\Jobs\Job;
+use Illuminate\Queue\Jobs\JobName;
 use GearmanWorker;
 use Exception;
 
@@ -74,7 +75,12 @@ class GearmanJob extends Job implements QueueJobInterface {
             return;
         }
 
-        list($class, $method) = $this->parseJob($payload['job']);
+        // compatibility with Laravel 5.4+
+        if (class_exists(JobName::class)) {
+            list($class, $method) = JobName::parse($payload['job']);
+        } else {
+            list($class, $method) = $this->parseJob($payload['job']);
+        }
 
         $this->instance = $this->resolve($class);
         $this->instance->{$method}($this, $payload['data']);
