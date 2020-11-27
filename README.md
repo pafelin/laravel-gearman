@@ -84,7 +84,7 @@ Finally I just run on my console:
 
 And I go to check what's on my email
 
-#Bugs
+# Bugs
 
 Please if you notice a bug open an issue or submit request. 
 
